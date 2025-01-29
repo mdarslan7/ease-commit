@@ -140,10 +140,10 @@ async function generateCommitMessageHandler() {
     // Use staged diff if user does not want to provide custom diff
     const diff = options.confirmDiff ? options.diff : stagedDiff;
 
-    const prompt = generatePromptForCommit(diff, options);
-    if (!prompt.trim()) {
-      throw new Error('Failed to generate prompt from diff');
-    }
+    // const prompt = generatePromptForCommit(diff, options);
+    // if (!prompt.trim()) {
+    //   throw new Error('Failed to generate prompt from diff');
+    // }
 
     const commitMessage = await generateCommitMessage(diff, options.commitType);
     
