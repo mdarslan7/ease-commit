@@ -1,0 +1,20 @@
+{
+  "name": "easy-commit",
+  "version": "1.0.0",
+  "description": "Generate Git commit messages with Gemini API",
+  "main": "index.js",
+  "bin": {
+    "easy-commit": "./bin/easy-commit.js"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "chalk": "^5.4.1",
+    "dotenv": "^10.0.0",
+    "inquirer": "^8.2.4"
+  },
+  "scripts": {
+    "start": "node bin/easy-commit.js"
+  },
+  "author": "Your Name",
+  "license": "MIT"
+}
