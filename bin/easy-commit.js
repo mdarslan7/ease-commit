@@ -118,22 +118,8 @@ async function generateCommitMessageHandler() {
     const stagedDiff = await getGitDiff();
 
     if (!stagedDiff) {
-      const { stageChanges } = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'stageChanges',
-          message: 'No staged changes found. Would you like to stage all changes before generating a commit message?',
-          default: true,
-        },
-      ]);
-
-      if (stageChanges) {
-        console.log('Staging all changes...');
-        execSync('git add .', { stdio: 'inherit' });
-        console.log('✅ All changes have been staged.');
-      } else {
-        throw new Error('No staged changes detected. Please stage changes before generating a commit message.');
-      }
+      printError('No changes staged. Please stage your changes using `git add .` before generating a commit message.');
+      process.exit(1); // Stop the process if no changes are staged
     }
 
     const options = await getCommitOptions();
