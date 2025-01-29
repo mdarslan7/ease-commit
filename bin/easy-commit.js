@@ -114,7 +114,7 @@ async function generateCommitMessageHandler() {
     }
 
     // Generate commit message
-    const commitMessage = await generateCommitMessage(diff, null, options.commitType);
+    const commitMessage = await generateCommitMessage(diff, options.commitType);
     
     // Display the result
     printCommitMessage(commitMessage);

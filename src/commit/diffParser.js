@@ -54,15 +54,15 @@ function generatePromptForCommit(diff, options = {}) {
   const parsedDiff = parseDiff(diff);
 
   // Build the prompt with template literals for better readability
-  let prompt = `Write a professional Git commit message in ${language} for the following diff:\n\n${parsedDiff}\n`;
+  let prompt = `Write a professional Git commit message in ${language} for the following changes:\n\n${parsedDiff}\n`;
 
   // Add commit type instructions
   if (commitType) {
     const typeInstructions = {
       short: 'Keep the message concise and under 50 characters.',
-      long: 'Provide a detailed explanation of the changes.',
-      concise: 'Focus on the key changes only.',
-      creative: 'Write an engaging but professional message.'
+      long: 'Provide a detailed explanation of the changes made, including the reason behind the change.',
+      concise: 'Focus on the key changes only and make the message as brief as possible.',
+      creative: 'Write an engaging but professional message that captures the essence of the changes.'
     };
 
     prompt += `\nCommit Type: ${commitType}\n`;

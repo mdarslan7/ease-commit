@@ -69,6 +69,7 @@ const createRequestPayload = (diffContent, commitType, recentCommits) => ({
  */
 const generateCommitMessage = async (diffs = '', commitType = 'short') => {
   try {
+    commitType = commitType || 'short';
     // Fetch recent commit history
     const recentCommits = getRecentCommits(5);
 
@@ -83,6 +84,10 @@ const generateCommitMessage = async (diffs = '', commitType = 'short') => {
 
     // Create request payload with Git diff and recent commit history
     const requestPayload = createRequestPayload(diffs, commitType, recentCommits);
+
+    // Log the request payload (prompt) for debugging
+    // console.log('Request Payload (Prompt):');
+    // console.log(JSON.stringify(requestPayload, null, 2));
 
     // Make API request
     console.log('Sending request to Gemini API...'); // Debug log

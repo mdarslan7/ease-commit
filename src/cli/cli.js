@@ -2,10 +2,10 @@
 
 const { program } = require('commander');
 const inquirer = require('inquirer');
-const { log, checkEnvVar, validateCommitType, confirmAction } = require('./utils');
-const { generateCommitMessage } = require('./commit/commitGenerator');
-const { getGeminiAPIKey } = require('./config/apiKeyConfig');
-const { getCommitOptions } = require('./commit/commitGenerator');
+const { log, checkEnvVar, validateCommitType, confirmAction } = require('../api/utils');
+const { generateCommitMessage } = require('../commit/commitGenerator');
+const { getGeminiAPIKey } = require('../config/apiKeyConfig');
+const { getCommitOptions } = require('../commit/commitGenerator');
 
 // Ensure that the Gemini API key is available in environment
 checkEnvVar('GEMINI_API_KEY');
