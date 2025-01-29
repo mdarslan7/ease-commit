@@ -2,127 +2,155 @@ const axios = require('axios');
 const { execSync } = require('child_process');
 require('dotenv').config();
 
-const GEMINI_API_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta';
-const GEMINI_MODEL = 'gemini-1.5-flash';
+const API_CONFIG = {
+  BASE_URL: 'https://generativelanguage.googleapis.com/v1beta',
+  MODEL: 'gemini-1.0-pro',  // Changed to stable model
+  TIMEOUT: 30000, // Increased timeout
+};
 
-// Helper function to get git diff of staged changes
-const getGitDiff = () => {
+/**
+ * Fetch recent commit messages from Git history
+ * @param {number} count - Number of recent commits to fetch
+ * @returns {string} Concatenated commit messages
+ */
+const getRecentCommits = (count = 5) => {
   try {
-    // Get the diff of staged changes
-    const diff = execSync('git diff --cached').toString();
-    
-    // If there are no staged changes, get the diff of all changes
-    if (!diff.trim()) {
-      return execSync('git diff').toString();
-    }
-    
-    return diff;
+    const result = execSync(`git log --oneline --max-count=${count}`).toString();
+    return result.split('\n').join(' ').trim();  // Return all recent commits in a single string
   } catch (error) {
-    throw new Error('Failed to get git diff. Make sure you are in a git repository.');
+    console.error('Error fetching Git history:', error.message);
+    return '';
   }
 };
 
-// Helper function to validate commit type
-const validateCommitType = (commitType) => {
-  const validTypes = ['concise', 'short', 'long', 'creative'];
-  if (!validTypes.includes(commitType)) {
-    throw new Error(`Invalid commit type. Must be one of: ${validTypes.join(', ')}`);
-  }
-};
+/**
+ * Create the API request payload
+ * @param {string} diffContent - Git diff content
+ * @param {string} commitType - Type of commit message
+ * @param {string} recentCommits - Recent commit messages (context)
+ * @returns {Object} Formatted request payload
+ */
+const createRequestPayload = (diffContent, commitType, recentCommits) => ({
+  contents: [{
+    parts: [{
+      text: `
+        Generate a ${commitType} commit message for these changes. The message should be in present tense, start with a verb, and clearly describe what the changes do.
 
-// Helper function to fetch and validate the Gemini API key
-const getApiKey = () => {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    throw new Error('Gemini API key is missing. Please set GEMINI_API_KEY in .env or environment variable.');
-  }
-  return apiKey;
-};
+        Git Diff:
+        ${diffContent}
 
-// Helper function to validate input parameters
-const validateInputs = (diffs, previousCommits) => {
-  if (typeof diffs !== 'string') {
-    throw new Error('Diffs must be a string');
-  }
+        Recent Commits:
+        ${recentCommits}
 
-  if (previousCommits && typeof previousCommits !== 'string') {
-    throw new Error('Previous commits must be a string');
+        Rules:
+        - Use present tense (e.g., "add" not "added")
+        - Start with a lowercase verb
+        - Be ${commitType} and clear
+        - Focus on WHAT changed and WHY
+        - Don't include the word "commit"
+        - Don't use bullet points
+        - Don't add quotes around the message
+      `
+    }]
+  }],
+  generationConfig: {
+    temperature: 0.7,
+    topK: 40,
+    topP: 0.95,
+    maxOutputTokens: 1024,
   }
-};
+});
 
-// Function to generate a commit message using the Gemini API
-const generateCommitMessage = async (diffs = '', previousCommits = '', commitType = 'concise') => {
+/**
+ * Generate a commit message using the Gemini API
+ * @param {string} diffs - Git diff content
+ * @param {string} [commitType='short'] - Type of commit message
+ * @returns {Promise<string>} Generated commit message
+ */
+const generateCommitMessage = async (diffs = '', commitType = 'short') => {
   try {
-    // If no diff is provided, get it from git
-    const diffContent = diffs.trim() || getGitDiff();
-    
-    // Handle case where there are no changes at all
-    if (!diffContent.trim()) {
-      throw new Error('No changes detected. Please make some changes before generating a commit message.');
+    // Fetch recent commit history
+    const recentCommits = getRecentCommits(5);
+
+    // Input validation
+    if (!diffs || typeof diffs !== 'string') {
+      throw new Error('Invalid diff content provided');
     }
 
-    // Validate inputs
-    validateInputs(diffContent, previousCommits);
-    validateCommitType(commitType);
-    const apiKey = getApiKey();
+    if (!process.env.GEMINI_API_KEY) {
+      throw new Error('GEMINI_API_KEY environment variable is not set');
+    }
 
-    // Format the content for the API request
-    const content = {
-      contents: [{
-        parts: [{
-          text: `Generate a ${commitType} commit message based on the following diff and previous commit messages:
-            Diff: ${diffContent}
-            Previous Commits: ${previousCommits}`
-        }]
-      }]
-    };
+    // Create request payload with Git diff and recent commit history
+    const requestPayload = createRequestPayload(diffs, commitType, recentCommits);
 
-    // Make the API request
+    // Make API request
+    console.log('Sending request to Gemini API...'); // Debug log
     const response = await axios.post(
-      `${GEMINI_API_BASE_URL}/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`,
-      content,
+      `${API_CONFIG.BASE_URL}/models/${API_CONFIG.MODEL}:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      requestPayload,
       {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        timeout: 10000 // 10 second timeout
+        headers: { 'Content-Type': 'application/json' },
+        timeout: API_CONFIG.TIMEOUT
       }
     );
 
-    // Validate and extract the response
+    // Debug logging
+    console.log('Response received from Gemini API'); // Debug log
+    
+    // Validate response structure
     if (!response.data) {
       throw new Error('Empty response received from Gemini API');
     }
 
-    if (!response.data.contents?.[0]?.parts?.[0]?.text) {
-      throw new Error('Invalid response format from Gemini API');
+    // Access the generated text safely
+    const generatedText = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    
+    if (!generatedText) {
+      throw new Error('No valid text generated in API response');
     }
 
-    return response.data.contents[0].parts[0].text.trim();
+    // Clean up the generated message
+    return generatedText
+      .trim()
+      .replace(/^["']|["']$/g, '') // Remove quotes if present
+      .replace(/^commit: /i, '')    // Remove 'commit:' prefix if present
+      .replace(/\n+/g, ' ')         // Replace multiple newlines with space
+      .trim();
 
   } catch (error) {
-    // Handle specific axios errors
+    // Enhanced error handling
     if (axios.isAxiosError(error)) {
       if (error.code === 'ECONNABORTED') {
-        throw new Error('Request timed out. Please try again.');
+        throw new Error('Request to Gemini API timed out. Please try again.');
       }
+      
       if (error.response) {
-        switch (error.response.status) {
+        const status = error.response.status;
+        const errorMessage = error.response.data?.error?.message || error.message;
+        
+        // Log the full error response for debugging
+        console.error('Full API Error Response:', JSON.stringify(error.response.data, null, 2));
+        
+        switch (status) {
+          case 400:
+            throw new Error(`Invalid request: ${errorMessage}`);
           case 401:
-            throw new Error('Invalid API key. Please check your Gemini API key.');
+            throw new Error('Invalid API key. Please check your GEMINI_API_KEY.');
           case 429:
             throw new Error('Rate limit exceeded. Please try again later.');
           case 500:
             throw new Error('Gemini API server error. Please try again later.');
           default:
-            throw new Error(`Gemini API error: ${error.response.status} - ${error.response.data?.error?.message || error.message}`);
+            throw new Error(`API error (${status}): ${errorMessage}`);
         }
       }
+      
       throw new Error(`Network error: ${error.message}`);
     }
-
-    // Re-throw the error with the original message for known errors
-    throw error;
+    
+    // Re-throw other errors with context
+    throw new Error(`Failed to generate commit message: ${error.message}`);
   }
 };
 

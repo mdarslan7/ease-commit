@@ -1,20 +1,20 @@
-const chalk = require('chalk');
+const { green, red, yellow, blue } = require('colorette');
 
 // Utility function to log messages with different colors based on severity
 function log(message, level = 'info') {
   switch (level) {
     case 'success':
-      console.log(chalk.green(`✔ ${message}`));
+      console.log(green(`✔ ${message}`));
       break;
     case 'error':
-      console.log(chalk.red(`✘ ${message}`));
+      console.log(red(`✘ ${message}`));
       break;
     case 'warning':
-      console.log(chalk.yellow(`⚠ ${message}`));
+      console.log(yellow(`⚠ ${message}`));
       break;
     case 'info':
     default:
-      console.log(chalk.blue(`ℹ ${message}`));
+      console.log(blue(`ℹ ${message}`));
       break;
   }
 }
@@ -51,6 +51,21 @@ function displayConfirmation(message) {
   log(message, 'info');
 }
 
+// Function to print commit message
+function printCommitMessage(commitMessage) {
+  log(`Commit Message: ${commitMessage}`, 'info');
+}
+
+// Function to print error message
+function printError(errorMessage) {
+  log(`Error: ${errorMessage}`, 'error');
+}
+
+// Function to print warning message
+function printWarning(warningMessage) {
+  log(`Warning: ${warningMessage}`, 'warning');
+}
+
 // Exporting functions for use in other files
 module.exports = {
   log,
@@ -59,4 +74,7 @@ module.exports = {
   displayApiKeyError,
   displayGitDiffError,
   displayConfirmation,
+  printCommitMessage,
+  printError,
+  printWarning,
 };
