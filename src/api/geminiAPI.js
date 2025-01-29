@@ -30,41 +30,54 @@ const getRecentCommits = (count = 5) => {
  * @param {string} recentCommits - Recent commit messages (context)
  * @returns {Object} Formatted request payload
  */
-const createRequestPayload = (diffContent, commitType, recentCommits, customDiff = null) => ({
-  contents: [{
-    parts: [{
-      text: `
-        Generate a ${commitType} commit message for these changes. The message should be in present tense, start with a verb, and clearly describe what the changes do. Focus on the specifics of what was changed (e.g., added new tests, fixed bug in user login, removed unnecessary code, updated variable names, etc.) and why. Ensure that the message accurately reflects the changes made, such as modifying or deleting comments rather than removing actual code.
+const createRequestPayload = (diffContent, commitType, recentCommits) => {
+  // Function to detect minimal or insignificant changes
+  const isMinimalChange = (diff) => {
+    // Check for diffs that only have whitespace changes or minor formatting differences
+    return !diff || diff.trim().length < 10 || diff.includes(' ') && diff.trim().length === 1;
+  };
 
-        Git Diff:
-        ${customDiff || diffContent}
+  // Determine if the changes are minimal
+  const minimalChanges = isMinimalChange(diffContent);
 
-        Recent Commits (for reference only, do not directly influence message content):
-        ${recentCommits}
+  return {
+    contents: [{
+      parts: [{
+        text: `
+          Generate a ${commitType} commit message for these changes. The message should be in present tense, start with a verb, and clearly describe what the changes do. Focus on the specifics of what was changed (e.g., added new tests, fixed bug in user login, removed unnecessary code, updated variable names, etc.) and why. Ensure that the message accurately reflects the changes made, such as modifying or deleting comments rather than removing actual code.
 
-        Instructions:
-        - If a custom diff was provided, prioritize that for generating the commit message.
-        - If no custom diff is provided, focus on the actual changes made in the code.
-        - The recent commit messages are provided for reference to ensure alignment with the project's style and tone, but they should not directly influence the content of the new commit message.
-        - Use present tense (e.g., "fix" instead of "fixed").
-        - Start with a lowercase verb.
-        - Be specific and clear. Focus on WHAT changed (e.g., fixed a bug, refactored code, updated documentation) and WHY it was necessary.
-        - Avoid generic terms like "tool" or "feature" without context. Instead, specify what part of the code was affected.
-        - Ensure that the commit message reflects the actual changes (e.g., if only comments were modified, do not suggest code removal).
-        - Avoid vague terms like "updated" or "improved" without explaining what was updated or improved.
-        - Make sure the message is concise, actionable, and meaningful.
-        - Do not use bullet points or quotes.
-        - Avoid using the word "commit" in the message.
-      `
-    }]
-  }],
-  generationConfig: {
-    temperature: 0.7,
-    topK: 40,
-    topP: 0.95,
-    maxOutputTokens: 1024,
-  }
-});
+          Git Diff:
+          ${diffContent}
+
+          Recent Commits (for reference only, do not directly influence message content):
+          ${recentCommits}
+
+          Instructions:
+          ${minimalChanges ? 
+            `- The changes are minimal (e.g., formatting or whitespace). Please generate a short commit message that reflects the changes, even if they seem trivial. Avoid unnecessary elaboration or large explanations.` :
+            `- Focus on the actual changes made in the code.
+             - The recent commit messages are provided for reference to ensure alignment with the project's style and tone, but they should not directly influence the content of the new commit message.
+             - Use present tense (e.g., "fix" instead of "fixed").
+             - Start with a lowercase verb.
+             - Be specific and clear. Focus on WHAT changed (e.g., fixed a bug, refactored code, updated documentation) and WHY it was necessary.
+             - Avoid generic terms like "tool" or "feature" without context. Instead, specify what part of the code was affected.
+             - Ensure that the commit message reflects the actual changes (e.g., if only comments were modified, do not suggest code removal).
+             - Avoid vague terms like "updated" or "improved" without explaining what was updated or improved.
+             - Make sure the message is concise, actionable, and meaningful.
+             - Do not use bullet points or quotes.
+             - Avoid using the word "commit" in the message.`
+          }
+        `
+      }]
+    }],
+    generationConfig: {
+      temperature: 0.7,
+      topK: 40,
+      topP: 0.95,
+      maxOutputTokens: 1024,
+    }
+  };
+};
 
 /**
  * Generate a commit message using the Gemini API
@@ -86,13 +99,13 @@ const generateCommitMessage = async (diffs = '', commitType = 'short') => {
     if (!process.env.GEMINI_API_KEY) {
       throw new Error('GEMINI_API_KEY environment variable is not set');
     }
-
+ 
     // Create request payload with Git diff and recent commit history
     const requestPayload = createRequestPayload(diffs, commitType, recentCommits);
 
     // Log the request payload (prompt) for debugging
-    console.log('Request Payload (Prompt):');
-    console.log(JSON.stringify(requestPayload, null, 2));
+    // console.log('Request Payload (Prompt):');
+    // console.log(JSON.stringify(requestPayload, null, 2));
 
     // Make API request
     console.log('Sending request to Gemini API...'); // Debug log
