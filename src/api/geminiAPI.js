@@ -34,7 +34,7 @@ const createRequestPayload = (diffContent, commitType, recentCommits) => ({
   contents: [{
     parts: [{
       text: `
-        Generate a ${commitType} commit message for these changes. The message should be in present tense, start with a verb, and clearly describe what the changes do.
+        Generate a ${commitType} commit message for these changes. The message should be in present tense, start with a verb, and clearly describe what the changes do. It should focus on the specifics of what was changed (e.g., which sections of the README were updated or which new features were added) and why the change was made.
 
         Git Diff:
         ${diffContent}
@@ -43,13 +43,13 @@ const createRequestPayload = (diffContent, commitType, recentCommits) => ({
         ${recentCommits}
 
         Rules:
-        - Use present tense (e.g., "add" not "added")
+        - Use present tense (e.g., "update" not "updated")
         - Start with a lowercase verb
-        - Be ${commitType} and clear
-        - Focus on WHAT changed and WHY
+        - Be specific and clear, focus on WHAT changed and WHY
+        - Avoid generic terms like "tool" or "feature" without context
         - Don't include the word "commit"
-        - Don't use bullet points
-        - Don't add quotes around the message
+        - Avoid vague language and make sure the message is actionable
+        - Do not use bullet points or add quotes around the message
       `
     }]
   }],
