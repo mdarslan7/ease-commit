@@ -34,7 +34,7 @@ const createRequestPayload = (diffContent, commitType, recentCommits) => ({
   contents: [{
     parts: [{
       text: `
-        Generate a ${commitType} commit message for these changes. The message should be in present tense, start with a verb, and clearly describe what the changes do. Focus on the specifics of what was changed (e.g., removed comments, updated documentation, etc.) and why. Ensure that the message accurately reflects the changes made, such as modifying or deleting comments rather than removing actual code.
+        Generate a ${commitType} commit message for these changes. The message should be in present tense, start with a verb, and clearly describe what the changes do. Focus on the specifics of what was changed (e.g., added new tests, fixed bug in user login, removed unnecessary code, updated variable names, etc.) and why. Ensure that the message accurately reflects the changes made, such as modifying or deleting comments rather than removing actual code.
 
         Git Diff:
         ${diffContent}
@@ -42,15 +42,16 @@ const createRequestPayload = (diffContent, commitType, recentCommits) => ({
         Recent Commits:
         ${recentCommits}
 
-        Rules:
-        - Use present tense (e.g., "update" not "updated")
-        - Start with a lowercase verb
-        - Be specific and clear, focus on WHAT changed (e.g., removed comments, added comments, fixed typos) and WHY
-        - Make sure the message reflects the actual changes (e.g., do not suggest code removal if only comments were deleted)
-        - Avoid generic terms like "tool" or "feature" without context
-        - Don't include the word "commit"
-        - Avoid vague language and make sure the message is actionable
-        - Do not use bullet points or add quotes around the message
+        Instructions:
+        - Use present tense (e.g., "fix" instead of "fixed").
+        - Start with a lowercase verb.
+        - Be specific and clear. Focus on WHAT changed (e.g., fixed a bug, refactored code, updated documentation) and WHY it was necessary.
+        - Avoid generic terms like "tool" or "feature" without context. Instead, specify what part of the code was affected.
+        - Ensure that the commit message reflects the actual changes (e.g., if only comments were modified, do not suggest code removal).
+        - Avoid vague terms like "updated" or "improved" without explaining what was updated or improved.
+        - Make sure the message is concise, actionable, and meaningful.
+        - Do not use bullet points or quotes.
+        - Avoid using the word "commit" in the message.
       `
     }]
   }],
