@@ -13,13 +13,13 @@ function log(message, level = 'info') {
       break;
     case 'info':
     default:
-      console.log(blue(`ℹ ${message}`));
+      console.log(blue(`${message}`));
       break;
   }
 }
 
 function printInfo(infoMessage) {
-  log(`Info: ${infoMessage}`, 'info');
+  log(`${infoMessage}`, 'info');
 }
 
 function printCommitMessage(commitMessage) {

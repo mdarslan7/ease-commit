@@ -89,25 +89,26 @@ async function generateCommitMessageHandler() {
       // For macOS/Linux
       } else if (process.platform === 'darwin' || process.platform === 'linux') {
         printInfo('1. For temporary session use, run:');
-        printInfo('   export GEMINI_API_KEY="your_api_key"');
-        printInfo('2. For permanent use, add the following line to your shell profile (~/.bashrc or ~/.bash_profile):');
-        printInfo('   export GEMINI_API_KEY="your_api_key"');
-        printInfo('   Then run:');
-        printInfo('   source ~/.bashrc (Linux) or source ~/.zshrc (macOS)');
+        console.log('   export GEMINI_API_KEY="your_api_key"');
+
+        printInfo('\n \n2. For permanent use, add the following line to your shell profile (~/.bashrc or ~/.bash_profile):');
+        console.log('   export GEMINI_API_KEY="your_api_key"');
+        console.log('   Then run:');
+        console.log('   source ~/.bashrc (Linux) or source ~/.zshrc (macOS)');
         
         // .env File Option
-        printInfo('3. Alternatively, create a .env file in your project directory with this content:');
-        printInfo('   GEMINI_API_KEY="your_api_key"');
-        printInfo('   Then, install dotenv to load the variable:');
-        printInfo('   npm install dotenv');
-        printInfo('   In your JavaScript file, require dotenv at the top:');
-        printInfo('   require("dotenv").config();');
+        printInfo('\n \n3. Alternatively, create a .env file in your project directory with this content:');
+        console.log('   GEMINI_API_KEY="your_api_key"');
+        console.log('   Then, install dotenv to load the variable:');
+        console.log('   npm install dotenv');
+        console.log('   In your JavaScript file, require dotenv at the top:');
+        console.log('   require("dotenv").config();');
       } else {
         printInfo('Unknown platform. Please configure the GEMINI_API_KEY manually.');
       }
 
       // Provide guidance for interactive CLI setup
-      printInfo('\nAlternatively, you can set up the API key interactively using the CLI:');
+      console.log('\n \nAlternatively, you can set up the API key interactively using the CLI:');
       printInfo('Run `easy-commit configure` and follow the prompts to set the API key.');
 
       process.exit(1); // Stop execution if API key is not found
