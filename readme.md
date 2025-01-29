@@ -1,3 +1,3 @@
 # easy-commit
 
-an ai powered commit generation tool that works with the gemini api
+An AI Powered Commit Generation Tool that works with the Gemini API.
