@@ -4,8 +4,8 @@ require('dotenv').config();
 
 const API_CONFIG = {
   BASE_URL: 'https://generativelanguage.googleapis.com/v1beta',
-  MODEL: 'gemini-1.0-pro',  // Changed to stable model
-  TIMEOUT: 30000, // Increased timeout
+  MODEL: 'gemini-1.0-pro',  
+  TIMEOUT: 30000, 
 };
 
 /**
