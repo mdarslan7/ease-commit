@@ -5,7 +5,7 @@ const { execSync } = require('child_process');
 const { generatePromptForCommit } = require('../src/commit/diffParser');
 const { generateCommitMessage } = require('../src/api/geminiAPI');
 const { loadApiKey } = require('../src/config/apiKeyConfig');
-const { printCommitMessage, printError, printWarning } = require('../src/cli/display.js');
+const { printCommitMessage, printError, printWarning, printInfo } = require('../src/cli/display.js');
 
 const COMMIT_TYPES = ['short', 'long', 'concise', 'creative'];
 const DEFAULT_COMMIT_TYPE = 'short';
@@ -80,35 +80,35 @@ async function generateCommitMessageHandler() {
 
       // For Windows
       if (process.platform === 'win32') {
-        console.log('1. For Command Prompt, run:');
-        console.log('   set GEMINI_API_KEY="your_api_key"');
-        console.log('2. For PowerShell, run:');
-        console.log('   $env:GEMINI_API_KEY="your_api_key"');
-        console.log('Alternatively, set it permanently using "setx GEMINI_API_KEY" or in the System Properties.');
+        printInfo('1. For Command Prompt, run:');
+        printInfo('   set GEMINI_API_KEY="your_api_key"');
+        printInfo('2. For PowerShell, run:');
+        printInfo('   $env:GEMINI_API_KEY="your_api_key"');
+        printInfo('Alternatively, set it permanently using "setx GEMINI_API_KEY" or in the System Properties.');
 
       // For macOS/Linux
       } else if (process.platform === 'darwin' || process.platform === 'linux') {
-        console.log('1. For temporary session use, run:');
-        console.log('   export GEMINI_API_KEY="your_api_key"');
-        console.log('2. For permanent use, add the following line to your shell profile (~/.bashrc or ~/.bash_profile):');
-        console.log('   export GEMINI_API_KEY="your_api_key"');
-        console.log('   Then run:');
-        console.log('   source ~/.bashrc (Linux) or source ~/.zshrc (macOS)');
+        printInfo('1. For temporary session use, run:');
+        printInfo('   export GEMINI_API_KEY="your_api_key"');
+        printInfo('2. For permanent use, add the following line to your shell profile (~/.bashrc or ~/.bash_profile):');
+        printInfo('   export GEMINI_API_KEY="your_api_key"');
+        printInfo('   Then run:');
+        printInfo('   source ~/.bashrc (Linux) or source ~/.zshrc (macOS)');
         
         // .env File Option
-        console.log('3. Alternatively, create a .env file in your project directory with this content:');
-        console.log('   GEMINI_API_KEY="your_api_key"');
-        console.log('   Then, install dotenv to load the variable:');
-        console.log('   npm install dotenv');
-        console.log('   In your JavaScript file, require dotenv at the top:');
-        console.log('   require("dotenv").config();');
+        printInfo('3. Alternatively, create a .env file in your project directory with this content:');
+        printInfo('   GEMINI_API_KEY="your_api_key"');
+        printInfo('   Then, install dotenv to load the variable:');
+        printInfo('   npm install dotenv');
+        printInfo('   In your JavaScript file, require dotenv at the top:');
+        printInfo('   require("dotenv").config();');
       } else {
-        console.log('Unknown platform. Please configure the GEMINI_API_KEY manually.');
+        printInfo('Unknown platform. Please configure the GEMINI_API_KEY manually.');
       }
 
       // Provide guidance for interactive CLI setup
-      console.log('\nAlternatively, you can set up the API key interactively using the CLI:');
-      console.log('Run `easy-commit configure` and follow the prompts to set the API key.');
+      printInfo('\nAlternatively, you can set up the API key interactively using the CLI:');
+      printInfo('Run `easy-commit configure` and follow the prompts to set the API key.');
 
       process.exit(1); // Stop execution if API key is not found
     }
