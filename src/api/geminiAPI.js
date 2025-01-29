@@ -30,19 +30,22 @@ const getRecentCommits = (count = 5) => {
  * @param {string} recentCommits - Recent commit messages (context)
  * @returns {Object} Formatted request payload
  */
-const createRequestPayload = (diffContent, commitType, recentCommits) => ({
+const createRequestPayload = (diffContent, commitType, recentCommits, customDiff = null) => ({
   contents: [{
     parts: [{
       text: `
         Generate a ${commitType} commit message for these changes. The message should be in present tense, start with a verb, and clearly describe what the changes do. Focus on the specifics of what was changed (e.g., added new tests, fixed bug in user login, removed unnecessary code, updated variable names, etc.) and why. Ensure that the message accurately reflects the changes made, such as modifying or deleting comments rather than removing actual code.
 
         Git Diff:
-        ${diffContent}
+        ${customDiff || diffContent}
 
-        Recent Commits:
+        Recent Commits (for reference only, do not directly influence message content):
         ${recentCommits}
 
         Instructions:
+        - If a custom diff was provided, prioritize that for generating the commit message.
+        - If no custom diff is provided, focus on the actual changes made in the code.
+        - The recent commit messages are provided for reference to ensure alignment with the project's style and tone, but they should not directly influence the content of the new commit message.
         - Use present tense (e.g., "fix" instead of "fixed").
         - Start with a lowercase verb.
         - Be specific and clear. Focus on WHAT changed (e.g., fixed a bug, refactored code, updated documentation) and WHY it was necessary.
