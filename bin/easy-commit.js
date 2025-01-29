@@ -2,10 +2,10 @@
 
 const inquirer = require('inquirer');
 const { execSync } = require('child_process');
-const { generatePromptForCommit } = require('../src/commit/diffParser');
-const { generateCommitMessage } = require('../src/api/geminiAPI');
-const { loadApiKey } = require('../src/config/apiKeyConfig');
-const { printCommitMessage, printError, printWarning, printInfo } = require('../src/cli/display.js');
+const { generatePromptForCommit } = require('../src/diffParser.js');
+const { generateCommitMessage } = require('../src/geminiAPI.js');
+const { loadApiKey } = require('../src/apiKeyConfig.js');
+const { printCommitMessage, printError, printWarning, printInfo } = require('../src/display.js');
 
 const COMMIT_TYPES = ['short', 'long', 'concise', 'creative'];
 const DEFAULT_COMMIT_TYPE = 'short';
