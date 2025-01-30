@@ -1,10 +1,10 @@
 {
-  "name": "easy-commit",
+  "name": "ease-commit",
   "version": "1.0.0",
   "description": "Generate clear, context-aware Git commit messages powered by the Gemini API, based on Git diffs and recent commit history.",
   "bin": {
-    "easy-commit": "./bin/easy-commit.js",
-    "easy-commit-configure": "./bin/configure.js"
+    "ease-commit": "./bin/ease-commit.js",
+    "ease-commit-configure": "./bin/configure.js"
   },
   "dependencies": {
     "axios": "^0.27.2",
@@ -16,16 +16,16 @@
     "yargs": "^17.7.2"
   },
   "scripts": {
-    "start": "node bin/easy-commit.js"
+    "start": "node bin/ease-commit.js"
   },
   "author": "Md Arslan",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mdarslan7/easy-commit.git"
+    "url": "https://github.com/mdarslan7/ease-commit.git"
   },
   "bugs": {
-    "url": "https://github.com/mdarslan7/easy-commit/issues"
+    "url": "https://github.com/mdarslan7/ease-commit/issues"
   },
-  "homepage": "https://github.com/mdarslan7/easy-commit#readme"
+  "homepage": "https://github.com/mdarslan7/ease-commit#readme"
 }
