@@ -91,8 +91,8 @@ const generateCommitMessage = async (diffs = '', commitType = 'short') => {
     const requestPayload = createRequestPayload(diffs, commitType, recentCommits);
 
     // Log the request payload (prompt) for debugging
-    // console.log('Request Payload (Prompt):');
-    // console.log(JSON.stringify(requestPayload, null, 2));
+    console.log('Request Payload (Prompt):');
+    console.log(JSON.stringify(requestPayload, null, 2));
 
     // Make API request
     console.log('Sending request to Gemini API...'); // Debug log
