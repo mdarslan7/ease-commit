@@ -3,7 +3,7 @@ const fs = require("fs");
 const { execSync } = require("child_process");
 const path = require("path");
 const os = require("os");
-require("dotenv").config();
+require("dotenv").config(); 
 
 const API_CONFIG = {
   BASE_URL: "https://generativelanguage.googleapis.com/v1beta",
