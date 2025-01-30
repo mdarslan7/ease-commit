@@ -11,7 +11,7 @@ const API_CONFIG = {
   TIMEOUT: 30000,
 };
 
-const getRecentCommits = (count = 5) => {
+const getRecentCommits = (count = 3) => {
   try {
     const result = execSync(
       `git log --oneline --max-count=${count}`
@@ -29,7 +29,7 @@ const createRequestPayload = (diffContent, commitType, recentCommits) => ({
       parts: [
         {
           text: `
-        Generate a ${commitType} commit message for these changes. The message should be in present tense, start with a verb, and clearly describe what the changes do. Focus on the specifics of what was changed (e.g., added new tests, fixed bug in user login, removed unnecessary code, updated variable names, etc.) and why. Ensure that the message accurately reflects the changes made, such as modifying or deleting comments rather than removing actual code.
+        Generate a ${commitType} commit message for these changes. The message should be in present tense, start with a verb, and clearly describe what the changes do. Focus on the specifics of what was changed and where it was changed as in which file (e.g., added new tests, fixed bug in user login, removed unnecessary code, updated variable names, etc.) and why. Ensure that the message accurately reflects the changes made, such as modifying or deleting comments rather than removing actual code.
 
         Git Diff:
         ${diffContent}
@@ -38,19 +38,19 @@ const createRequestPayload = (diffContent, commitType, recentCommits) => ({
         ${recentCommits}
 
         Instructions:
+        - Prioritize the content of the diff for generating the commit message.
+        - Also make sure if a short commit message has been asked, it should be concise and actionable. And accordingly generate the message for long, concise and creative.
         - If a custom diff was provided, prioritize that for generating the commit message.
         - If no custom diff is provided, focus on the actual changes made in the code.
         - The recent commit messages are provided for reference to ensure alignment with the project's style and tone, but they should not directly influence the content of the new commit message.
         - Use present tense (e.g., "fix" instead of "fixed").
         - Start with a lowercase verb.
         - Be specific and clear. Focus on WHAT changed (e.g., fixed a bug, refactored code, updated documentation) and WHY it was necessary.
-        - Avoid generic terms like "tool" or "feature" without context. Instead, specify what part of the code was affected.
         - Ensure that the commit message reflects the actual changes (e.g., if only comments were modified, do not suggest code removal).
-        - Avoid vague terms like "updated" or "improved" without explaining what was updated or improved.
         - Make sure the message is concise, actionable, and meaningful.
         - Do not use bullet points or quotes.
         - Avoid using the word "commit" in the message.
-      `,
+        - Pay attention to spelling, grammar, and punctuation. `,
         },
       ],
     },
@@ -91,6 +91,8 @@ const generateCommitMessage = async (diffs = "", commitType = "short") => {
       commitType,
       recentCommits
     );
+
+    console.log("Generated request payload:", JSON.stringify(requestPayload));
 
     // Make API request
     console.log("Sending request to the Gemini API..."); 
