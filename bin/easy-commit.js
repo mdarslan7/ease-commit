@@ -131,7 +131,7 @@ async function generateCommitMessageHandler() {
 
     const parsedDiff = parseDiff(diff)
 
-    console.log(parsedDiff);
+    // console.log(parsedDiff);
 
     if (!parsedDiff.trim()) {
       throw new Error('Failed to generate prompt from diff');

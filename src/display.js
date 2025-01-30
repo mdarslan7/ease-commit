@@ -18,6 +18,10 @@ function log(message, level = 'info') {
   }
 }
 
+function printSuccess(successMessage) {
+  log(`${successMessage}, 'success'`)
+}
+
 function printInfo(infoMessage) {
   log(`${infoMessage}`, 'info');
 }
@@ -35,6 +39,7 @@ function printWarning(warningMessage) {
 }
 
 module.exports = {
+  printSuccess,
   printCommitMessage,
   printError,
   printWarning,
