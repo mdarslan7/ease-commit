@@ -39,12 +39,11 @@ const createRequestPayload = (diffContent, commitType, recentCommits) => ({
 
         Instructions:
         - Prioritize the content of the diff for generating the commit message.
-        - Also make sure if a short commit message has been asked, it should be a in a single sentence and actionable. And accordingly generate the message for long, concise and creative.
+        - Don't give a descriptive commit message for a short commit message, it should be in a single line and vice versa, make sure of the full stops in between sentences.
         - If a custom diff was provided, prioritize that for generating the commit message.
         - If no custom diff is provided, focus on the actual changes made in the code.
         - The recent commit messages are provided for reference to ensure alignment with the project's style and tone, but they should not directly influence the content of the new commit message.
         - Use present tense (e.g., "fix" instead of "fixed").
-        - Start with a lowercase verb.
         - Be specific and clear. Focus on WHAT changed (e.g., fixed a bug, refactored code, updated documentation) and WHY it was necessary.
         - Ensure that the commit message reflects the actual changes (e.g., if only comments were modified, do not suggest code removal).
         - Make sure the message is concise, actionable, and meaningful.
