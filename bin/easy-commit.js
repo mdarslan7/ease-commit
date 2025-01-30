@@ -21,102 +21,20 @@ function isGitRepository() {
 
 function getGitDiff() {
   try {
+    const stagedDiff = execSync('git diff --cached', { encoding: 'utf8' });
+
+    if (stagedDiff.trim()) {
+      return stagedDiff;
+    }
+
+    // If no staged changes are found, return null
+    return null;
+
+  } catch (error) {
     if (!isGitRepository()) {
       throw new Error('Not a git repository. Please run this command inside a git repository.');
     }
-
-    const execOptions = { encoding: 'utf8', maxBuffer: 1024 * 1024 * 10 }; // Increase buffer size
-
-    // Check if there are any staged changes
-    const stagedFiles = execSync('git diff --cached --name-only', execOptions).trim();
-    if (!stagedFiles) {
-      return null; // No staged changes
-    }
-
-    // Get full staged diff (including whitespace changes)
-    const fullDiff = execSync('git diff --cached', execOptions).trim();
-
-    // Get diff ignoring only whitespace
-    const diffWithoutWhitespace = execSync('git diff --cached --ignore-all-space', execOptions).trim();
-
-    // Edge Case: Only whitespace changes detected
-    if (!diffWithoutWhitespace && fullDiff) {
-      return 'Only whitespace changes detected:\n' + fullDiff;
-    }
-
-    // Edge Case: Empty files added or deleted
-    const stagedFilesStatus = execSync('git diff --cached --name-status', execOptions).trim();
-    const emptyFileChanges = stagedFilesStatus.split('\n').filter(line => {
-      const [status, file] = line.split('\t');
-      if (!file || !status) return false;
-      
-      try {
-        if (status === 'A') {
-          // For new files, check if they're empty
-          const fileContent = execSync(`git cat-file -p :${file}`, execOptions).trim();
-          return !fileContent;
-        } else if (status === 'D') {
-          // For deleted files, check if they were empty in HEAD
-          try {
-            const fileContent = execSync(`git cat-file -p HEAD:${file}`, execOptions).trim();
-            return !fileContent;
-          } catch (e) {
-            // File might not exist in HEAD
-            return false;
-          }
-        }
-        return false;
-      } catch (e) {
-        return false; // Skip if there's an error reading the file
-      }
-    });
-
-    if (emptyFileChanges.length) {
-      return 'Empty files added or removed:\n' + emptyFileChanges.join('\n');
-    }
-
-    // Edge Case: File renames or moves
-    const renameChanges = execSync('git diff --cached -M --name-status --diff-filter=R', execOptions).trim();
-    if (renameChanges) {
-      return 'File renames/moves detected:\n' + renameChanges;
-    }
-
-    // Edge Case: File permission changes - Fixed to handle no permission changes
-    try {
-      const permissionChanges = execSync('git diff --cached --summary', execOptions)
-        .trim()
-        .split('\n')
-        .filter(line => line.includes('mode change'))
-        .join('\n');
-
-      if (permissionChanges) {
-        return 'File permission changes detected:\n' + permissionChanges;
-      }
-    } catch (e) {
-      // Ignore permission check errors
-    }
-
-    // Edge Case: Binary file changes
-    const binaryChanges = execSync('git diff --cached --numstat', execOptions).trim();
-    const binaryFiles = binaryChanges.split('\n').filter(line => {
-      const [added, deleted, file] = line.split('\t');
-      return file && (!added || !deleted || added === '-' || deleted === '-');
-    });
-
-    if (binaryFiles.length) {
-      return 'Binary file changes detected:\n' + binaryFiles.join('\n');
-    }
-
-    // Edge Case: Merge conflict resolutions
-    const mergeConflicts = execSync('git diff --cached --check', execOptions).trim();
-    if (mergeConflicts.includes('conflict')) {
-      return 'Merge conflict resolutions detected:\n' + mergeConflicts;
-    }
-
-    // Return full diff for normal changes
-    return fullDiff || null;
-  } catch (error) {
-    throw new Error(`Error getting staged diff: ${error.message}`);
+    throw error;
   }
 }
 
