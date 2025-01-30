@@ -19,7 +19,7 @@ function log(message, level = 'info') {
 }
 
 function printSuccess(successMessage) {
-  log(`${successMessage}, 'success'`)
+  log(`${successMessage}`, 'success')
 }
 
 function printInfo(infoMessage) {
