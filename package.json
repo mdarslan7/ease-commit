@@ -1,8 +1,7 @@
 {
   "name": "easy-commit",
   "version": "1.0.0",
-  "description": "Generate Git commit messages with Gemini API",
-  "main": "index.js",
+  "description": "Generate clear, context-aware Git commit messages powered by the Gemini API, based on Git diffs and recent commit history.",
   "bin": {
     "easy-commit": "./bin/easy-commit.js",
     "easy-commit-configure": "./bin/configure.js"
@@ -20,5 +19,13 @@
     "start": "node bin/easy-commit.js"
   },
   "author": "Md Arslan",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdarslan7/easy-commit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mdarslan7/easy-commit/issues"
+  },
+  "homepage": "https://github.com/mdarslan7/easy-commit#readme"
 }
