@@ -8,14 +8,12 @@ const yargs = require('yargs');
 const { saveApiKey } = require('../src/apiKeyConfig.js');
 const { printError, printSuccess } = require('../src/display.js');
 
-// Define the path where the API key is stored
 const CONFIG_PATH = path.join(os.homedir(), '.easy-commit-config.json');
 
-// Function to delete the API key (reset it)
 const resetApiKey = async () => {
   try {
     if (fs.existsSync(CONFIG_PATH)) {
-      fs.unlinkSync(CONFIG_PATH); // Delete the config file containing the API key
+      fs.unlinkSync(CONFIG_PATH); 
       printSuccess('✅ API key has been reset successfully!');
     } else {
       printError('No existing API key found to reset.');
@@ -25,7 +23,6 @@ const resetApiKey = async () => {
   }
 };
 
-// Function to configure (save) the API key
 const configureApiKey = async () => {
   try {
     const { apiKey } = await inquirer.prompt([
@@ -45,7 +42,6 @@ const configureApiKey = async () => {
   }
 };
 
-// Parse command line arguments using yargs
 const argv = yargs
   .option('reset', {
     alias: 'r',
@@ -55,10 +51,8 @@ const argv = yargs
   })
   .argv;
 
-// Run the reset logic if --reset or -r is passed
 if (argv.reset) {
   resetApiKey();
 } else {
-  // If no reset flag, run the configuration process
   configureApiKey();
 }

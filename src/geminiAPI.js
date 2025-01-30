@@ -11,30 +11,18 @@ const API_CONFIG = {
   TIMEOUT: 30000,
 };
 
-/**
- * Fetch recent commit messages from Git history
- * @param {number} count - Number of recent commits to fetch
- * @returns {string} Concatenated commit messages
- */
 const getRecentCommits = (count = 5) => {
   try {
     const result = execSync(
       `git log --oneline --max-count=${count}`
     ).toString();
-    return result.split("\n").join(" ").trim(); // Return all recent commits in a single string
+    return result.split("\n").join(" ").trim(); 
   } catch (error) {
     console.error("Error fetching Git history:", error.message);
     return "";
   }
 };
 
-/**
- * Create the API request payload
- * @param {string} diffContent - Git diff content
- * @param {string} commitType - Type of commit message
- * @param {string} recentCommits - Recent commit messages (context)
- * @returns {Object} Formatted request payload
- */
 const createRequestPayload = (diffContent, commitType, recentCommits) => ({
   contents: [
     {
@@ -75,26 +63,17 @@ const createRequestPayload = (diffContent, commitType, recentCommits) => ({
   },
 });
 
-/**
- * Generate a commit message using the Gemini API
- * @param {string} diffs - Git diff content
- * @param {string} [commitType='short'] - Type of commit message
- * @returns {Promise<string>} Generated commit message
- */
 const generateCommitMessage = async (diffs = "", commitType = "short") => {
   try {
     commitType = commitType || "short";
-    // Fetch recent commit history
     const recentCommits = getRecentCommits(5);
 
-    // Input validation
     if (!diffs || typeof diffs !== "string") {
       throw new Error("Invalid diff content provided");
     }
 
     const CONFIG_PATH = path.join(os.homedir(), ".easy-commit-config.json");
 
-    // Check for the GEMINI_API_KEY in environment or config file
     const apiKey =
       process.env.GEMINI_API_KEY ||
       (fs.existsSync(CONFIG_PATH)
@@ -107,19 +86,14 @@ const generateCommitMessage = async (diffs = "", commitType = "short") => {
       );
     }
 
-    // Create request payload with Git diff and recent commit history
     const requestPayload = createRequestPayload(
       diffs,
       commitType,
       recentCommits
     );
 
-    // Log the request payload (prompt) for debugging
-    // console.log('Request Payload (Prompt):');
-    // console.log(JSON.stringify(requestPayload, null, 2));
-
     // Make API request
-    console.log("Sending request to Gemini API..."); // Debug log
+    console.log("Sending request to the Gemini API..."); 
     const response = await axios.post(
       `${API_CONFIG.BASE_URL}/models/${API_CONFIG.MODEL}:generateContent?key=${apiKey}`,
       requestPayload,
@@ -129,15 +103,10 @@ const generateCommitMessage = async (diffs = "", commitType = "short") => {
       }
     );
 
-    // Debug logging
-    console.log("Response received from Gemini API"); // Debug log
-
-    // Validate response structure
     if (!response.data) {
       throw new Error("Empty response received from Gemini API");
     }
 
-    // Access the generated text safely
     const generatedText =
       response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
@@ -145,7 +114,7 @@ const generateCommitMessage = async (diffs = "", commitType = "short") => {
       throw new Error("No valid text generated in API response");
     }
 
-    // Clean up the generated message
+    // Clean up the generated text
     return generatedText
       .trim()
       .replace(/^["']|["']$/g, "") // Remove quotes if present
@@ -153,7 +122,6 @@ const generateCommitMessage = async (diffs = "", commitType = "short") => {
       .replace(/\n+/g, " ") // Replace multiple newlines with space
       .trim();
   } catch (error) {
-    // Enhanced error handling
     if (axios.isAxiosError(error)) {
       if (error.code === "ECONNABORTED") {
         throw new Error("Request to Gemini API timed out. Please try again.");
@@ -164,7 +132,6 @@ const generateCommitMessage = async (diffs = "", commitType = "short") => {
         const errorMessage =
           error.response.data?.error?.message || error.message;
 
-        // Log the full error response for debugging
         console.error(
           "Full API Error Response:",
           JSON.stringify(error.response.data, null, 2)
@@ -189,7 +156,6 @@ const generateCommitMessage = async (diffs = "", commitType = "short") => {
       throw new Error(`Network error: ${error.message}`);
     }
 
-    // Re-throw other errors with context
     throw new Error(`Failed to generate commit message: ${error.message}`);
   }
 };
