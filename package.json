@@ -6,6 +6,10 @@
     "ease-commit": "./bin/ease-commit.js",
     "ease-commit-configure": "./bin/configure.js"
   },
+  "files": [
+    "bin/",
+    "src/"
+  ],
   "dependencies": {
     "axios": "^0.27.2",
     "chalk": "^5.4.1",
@@ -18,6 +22,7 @@
   "scripts": {
     "start": "node bin/ease-commit.js"
   },
+  "preferGlobal": true,
   "author": "Md Arslan",
   "license": "MIT",
   "repository": {
