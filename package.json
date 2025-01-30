@@ -11,6 +11,7 @@
     "axios": "^0.27.2",
     "chalk": "^5.4.1",
     "colorette": "^2.0.20",
+    "commander": "^13.1.0",
     "dotenv": "^10.0.0",
     "inquirer": "^8.2.4",
     "yargs": "^17.7.2"
@@ -18,6 +19,6 @@
   "scripts": {
     "start": "node bin/easy-commit.js"
   },
-  "author": "Your Name",
+  "author": "Md Arslan",
   "license": "MIT"
 }

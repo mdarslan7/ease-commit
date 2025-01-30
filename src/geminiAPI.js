@@ -39,7 +39,7 @@ const createRequestPayload = (diffContent, commitType, recentCommits) => ({
 
         Instructions:
         - Prioritize the content of the diff for generating the commit message.
-        - Also make sure if a short commit message has been asked, it should be concise and actionable. And accordingly generate the message for long, concise and creative.
+        - Also make sure if a short commit message has been asked, it should be a in a single line and actionable. And accordingly generate the message for long, concise and creative.
         - If a custom diff was provided, prioritize that for generating the commit message.
         - If no custom diff is provided, focus on the actual changes made in the code.
         - The recent commit messages are provided for reference to ensure alignment with the project's style and tone, but they should not directly influence the content of the new commit message.
@@ -91,8 +91,6 @@ const generateCommitMessage = async (diffs = "", commitType = "short") => {
       commitType,
       recentCommits
     );
-
-    console.log("Generated request payload:", JSON.stringify(requestPayload));
 
     // Make API request
     console.log("Sending request to the Gemini API..."); 
