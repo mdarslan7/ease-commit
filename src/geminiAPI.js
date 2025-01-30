@@ -71,7 +71,7 @@ const generateCommitMessage = async (diffs = "", commitType = "short") => {
       throw new Error("Invalid diff content provided");
     }
 
-    const CONFIG_PATH = path.join(os.homedir(), ".easy-commit-config.json");
+    const CONFIG_PATH = path.join(os.homedir(), ".ease-commit-config.json");
 
     const apiKey =
       process.env.GEMINI_API_KEY ||

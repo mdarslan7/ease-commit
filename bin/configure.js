@@ -8,7 +8,7 @@ const yargs = require('yargs');
 const { saveApiKey } = require('../src/apiKeyConfig.js');
 const { printError, printSuccess } = require('../src/display.js');
 
-const CONFIG_PATH = path.join(os.homedir(), '.easy-commit-config.json');
+const CONFIG_PATH = path.join(os.homedir(), '.ease-commit-config.json');
 
 const resetApiKey = async () => {
   try {

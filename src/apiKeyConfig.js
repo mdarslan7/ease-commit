@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const CONFIG_PATH = path.join(os.homedir(), ".easy-commit-config.json");
+const CONFIG_PATH = path.join(os.homedir(), ".ease-commit-config.json");
 
 const loadApiKey = () => {
   let apiKey = process.env.GEMINI_API_KEY || null;

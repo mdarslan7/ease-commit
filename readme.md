@@ -1,14 +1,14 @@
-# Easy-Commit
+# Ease-Commit
 
 Tired of dull, generic commit messages that don’t reflect the work you've done? 🚀
 
-Introducing Easy-Commit – the tool that transforms your Git commit messages into meaningful, context-aware statements. Forget about **Fixed stuff** or **Made changes** – Easy-Commit uses the power of AI to analyze your Git diffs and recent commits, crafting clear, concise, and relevant messages every time.
+Introducing Ease-Commit – the tool that transforms your Git commit messages into meaningful, context-aware statements. Forget about **Fixed stuff** or **Made changes** – Ease-Commit uses the power of AI to analyze your Git diffs and recent commits, crafting clear, concise, and relevant messages every time.
 
-By integrating with the Gemini API, it ensures your messages are tailored to your project’s tone and style, making your commit history more organized and meaningful. Say goodbye to the hassle of writing commit messages – let Easy-Commit do the work for you! ✨
+By integrating with the Gemini API, it ensures your messages are tailored to your project’s tone and style, making your commit history more organized and meaningful. Say goodbye to the hassle of writing commit messages – let Ease-Commit do the work for you! ✨
 
 ## What Needs Fixing?
 
-Writing good commit messages is crucial for maintaining a clean and understandable Git history. However, many developers struggle with crafting well-structured commit messages, often resulting in vague, inconsistent, or incomplete descriptions. **Easy-Commit** solves this problem by generating commit messages that:
+Writing good commit messages is crucial for maintaining a clean and understandable Git history. However, many developers struggle with crafting well-structured commit messages, often resulting in vague, inconsistent, or incomplete descriptions. **Ease-Commit** solves this problem by generating commit messages that:
 - Accurately describe the changes made in the code.
 - Follow the correct structure and style (e.g., using present tense, clear descriptions).
 - Align with the tone of recent commit messages in your project.
@@ -23,20 +23,20 @@ Writing good commit messages is crucial for maintaining a clean and understandab
 
 ## Installation
 
-To install **Easy-Commit**, you can use npm:
+To install **Ease-Commit**, you can use npm:
 
 ```bash
-npm install easy-commit
+npm install ease-commit
 ```
 
 ## Usage
 
 ### Basic Usage
 
-The simplest way to use Easy-Commit is through its interactive CLI:
+The simplest way to use Ease-Commit is through its interactive CLI:
 
 ```bash
-easy-commit
+ease-commit
 ```
 
 This will start an interactive session that:
@@ -49,7 +49,7 @@ This will start an interactive session that:
 Here's what the typical workflow looks like:
 
 ```bash
-❯ easy-commit
+❯ ease-commit
 ✅ Gemini API key is set and loaded successfully.
 
 ? What type of commit message would you like to generate? 
@@ -71,7 +71,7 @@ Sending request to the Gemini API...
 
 ### Configuration
 
-Before using easy-commit, you need to set up your Gemini API key. You can configure it using any of these methods:
+Before using ease-commit, you need to set up your Gemini API key. You can configure it using any of these methods:
 
 1. **Environment Variable (Temporary)**:
    - For macOS/Linux
@@ -119,11 +119,11 @@ Before using easy-commit, you need to set up your Gemini API key. You can config
 
 4. **Interactive Configuration**:
    ```bash
-   easy-commit configure
+   ease-commit configure
    ```
    - To remove your api-key from the created configuration file, run
    ```bash
-   easy-commit configure --reset
+   ease-commit configure --reset
    ```
 
 If the API key is not configured, you'll receive an error message prompting you to set it up using one of these methods.

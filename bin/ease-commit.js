@@ -132,7 +132,7 @@ async function generateCommitMessageHandler() {
         "\n \nAlternatively, you can set up the API key interactively using the CLI:"
       );
       printInfo(
-        "Run `easy-commit configure` and follow the prompts to set the API key."
+        "Run `ease-commit configure` and follow the prompts to set the API key."
       );
 
       process.exit(1);
