@@ -128,6 +128,9 @@ Before using ease-commit, you need to set up your Gemini API key. You can config
 
 If the API key is not configured, you'll receive an error message prompting you to set it up using one of these methods.
 
+## Demo
+[![Watch the demo](https://img.youtube.com/vi/enhOTrQUX3I/0.jpg)](https://www.youtube.com/watch?v=enhOTrQUX3I)
+
 ## Windows Users - Important Information (Potential Issue)
 
 On Windows, you might need to ensure the directory containing globally installed npm package executables is in your system's PATH environment variable for `ease-commit` to work directly. This is a standard Windows/npm requirement, and while it often works automatically, there can sometimes be issues.  If `ease-commit` isn't recognized, follow these steps:
