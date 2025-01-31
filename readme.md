@@ -26,7 +26,7 @@ Writing good commit messages is crucial for maintaining a clean and understandab
 To install **Ease-Commit**, you can use npm:
 
 ```bash
-npm install ease-commit
+npm install -g ease-commit
 ```
 
 ## Usage
