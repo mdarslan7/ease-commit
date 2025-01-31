@@ -1,6 +1,6 @@
 {
   "name": "ease-commit",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Generate clear, context-aware Git commit messages powered by the Gemini API, based on Git diffs and recent commit history.",
   "bin": {
     "ease-commit": "./bin/ease-commit.js",
