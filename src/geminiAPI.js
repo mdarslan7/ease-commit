@@ -13,11 +13,12 @@ const API_CONFIG = {
 
 const getRecentCommits = (count = 3) => {
   try {
-    const result = execSync(
-      `git log --oneline --max-count=${count}`
-    ).toString();
-    return result.split("\n").join(" ").trim(); 
+    const result = execSync(`git log --oneline --max-count=${count}`).toString();
+    return result.split("\n").join(" ").trim() || "No commits yet.";
   } catch (error) {
+    if (error.message.includes("does not have any commits yet")) {
+      return "No commits yet.";
+    }
     console.error("Error fetching Git history:", error.message);
     return "";
   }
