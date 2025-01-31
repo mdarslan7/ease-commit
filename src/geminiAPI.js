@@ -11,10 +11,13 @@ const API_CONFIG = {
   TIMEOUT: 30000,
 };
 
-const getRecentCommits = (count = 3) => {
+const getRecentCommits = () => {
   try {
-    const result = execSync(`git log --oneline --max-count=${count}`).toString();
-    return result.split("\n").join(" ").trim() || "No commits yet.";
+    for (let count of [3, 2, 1]) {
+      const result = execSync(`git log --oneline --max-count=${count}`).toString().trim();
+      if (result) return result.split("\n").join(" ");
+    }
+    return "No commits yet.";
   } catch (error) {
     if (error.message.includes("does not have any commits yet")) {
       return "No commits yet.";
