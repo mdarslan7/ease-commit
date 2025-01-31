@@ -1,6 +1,6 @@
 # Ease-Commit
 
-Tired of dull, generic commit messages that don’t reflect the work you've done? 🚀
+Tired of dull, generic commit messages that don’t reflect the work you've done? 
 
 Introducing Ease-Commit – the tool that transforms your Git commit messages into meaningful, context-aware statements. Forget about **Fixed stuff** or **Made changes** – Ease-Commit uses the power of AI to analyze your Git diffs and recent commits, crafting clear, concise, and relevant messages every time.
 
