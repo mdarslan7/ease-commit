@@ -128,5 +128,23 @@ Before using ease-commit, you need to set up your Gemini API key. You can config
 
 If the API key is not configured, you'll receive an error message prompting you to set it up using one of these methods.
 
+## Windows Users - Important Information (Potential Issue)
+
+On Windows, you might need to ensure the directory containing globally installed npm package executables is in your system's PATH environment variable for `ease-commit` to work directly. This is a standard Windows/npm requirement, and while it often works automatically, there can sometimes be issues.  If `ease-commit` isn't recognized, follow these steps:
+
+1. **Find your global npm installation directory:** Open either PowerShell or Command Prompt and run:
+
+   ```bash
+   npm config get prefix
+   ```
+
+   This will show you the directory where global packages are installed. For example: `C:\Users\YourUsername\AppData\Roaming\npm` (or it might be something different).  **This is the most critical step.  Do not assume a fixed path.** <br> <br>
+
+2. **Add to PATH (If Necessary):** The directory you found in the previous step (the output of `npm config get prefix`) is the directory you need to add to your PATH, if it's not already added.  Do not assume it's in a `.bin` subfolder unless `npm config get prefix` shows a path that does not contain the executables directly. Add this path to your system's or user's PATH environment variable. <br> <br>
+
+3. **Close and reopen your terminal:** After making the changes to your PATH, you must close and reopen your PowerShell or Command Prompt window for the changes to take effect. <br> <br>
+
+4. **Test:** Now try running `ease-commit` again. It should work.
+
 ### LICENSE
 This project is licensed under the MIT License - see the LICENSE file for details.
