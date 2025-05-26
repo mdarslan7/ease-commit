@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const API_CONFIG = {
   BASE_URL: "https://generativelanguage.googleapis.com/v1beta",
-  MODEL: "gemini-1.0-pro",
+  MODEL: "gemini-2.0-flash",
   TIMEOUT: 30000,
 };
 
