@@ -119,11 +119,11 @@ Before using ease-commit, you need to set up your Gemini API key. You can config
 
 4. **Interactive Configuration**:
    ```bash
-   ease-commit configure
+   ease-commit-configure
    ```
    - To remove your api-key from the created configuration file, run
    ```bash
-   ease-commit configure --reset
+   ease-commit-configure --reset
    ```
 
 If the API key is not configured, you'll receive an error message prompting you to set it up using one of these methods.
